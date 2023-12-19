@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 
 # Replace this with the actual endpoint of your chat service
-CHAT_SERVICE_ENDPOINT = 'https://sturdy-disco-5gg9gvqprg6wh4jv7-5000.app.github.dev'
+CHAT_SERVICE_ENDPOINT = 'https://bookish-giggle-pjj6j7rqw7qjh76wp-5000.app.github.dev'
 
 def get_chat_response(user_input):
     try:
