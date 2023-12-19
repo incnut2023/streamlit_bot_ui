@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat UI</title>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <div v-for="(message, index) in messages" :key="index">
+                {{ message }}
+            </div>
+        </div>
+        <div>
+            <input v-model="userInput" @keyup.enter="sendMessage" placeholder="Type your message...">
+            <button @click="sendMessage">Send</button>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                userInput: '',
+                messages: []
+            },
+            methods: {
+                sendMessage() {
+                    if (this.userInput.trim() !== '') {
+                        this.messages.push(`You: ${this.userInput}`);
+                        // Send user input to the server
+                        fetch('/send_message', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ user_input: this.userInput }),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Display chat service response
+                            this.messages.push(data.response);
+                            // Clear user input
+                            this.userInput = '';
+                        });
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
